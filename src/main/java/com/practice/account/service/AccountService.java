@@ -1,6 +1,7 @@
 package com.practice.account.service;
 
 import com.practice.account.dto.AccountResponse;
+import com.practice.account.dto.BalanceResponse;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -12,11 +13,25 @@ public class AccountService {
         1002L, new AccountResponse(1002L, "Taylor Reed", new BigDecimal("840.50"), "USD")
     );
 
-    public AccountResponse findById(Long accountId) {
-        AccountResponse account = accounts.get(accountId);
+    public AccountResponse findById(Long accountNo) {
+        AccountResponse account = accounts.get(accountNo);
         if (account == null) {
-            throw new AccountNotFoundException(accountId);
+            throw new AccountNotFoundException(accountNo);
         }
         return account;
     }
+
+    public BalanceResponse getBalance(Long accountNo) {
+
+        // Reuse existing account lookup and 404 handling.
+        AccountResponse account = findById(accountNo);
+
+        // Return only the fields required by the balance API.
+        return new BalanceResponse(
+                account.accountNo(),
+                account.balance(),
+                account.currency()
+        );
+    }
+
 }

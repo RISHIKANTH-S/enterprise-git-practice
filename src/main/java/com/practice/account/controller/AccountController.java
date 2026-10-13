@@ -1,6 +1,7 @@
 package com.practice.account.controller;
 
 import com.practice.account.dto.AccountResponse;
+import com.practice.account.dto.BalanceResponse;
 import com.practice.account.service.AccountService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +17,16 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/{accountId}")
-    public AccountResponse getAccount(@PathVariable Long accountId) {
-        return accountService.findById(accountId);
+    @GetMapping("/{accountNo}")
+    public AccountResponse getAccount(@PathVariable Long accountNo) {
+        return accountService.findById(accountNo);
     }
+
+    @GetMapping("/{accountNo}/balance")
+    public BalanceResponse getAccountBalance(
+            @PathVariable Long accountNo) {
+
+        return accountService.getBalance(accountNo);
+    }
+
 }
